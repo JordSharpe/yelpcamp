@@ -1,5 +1,5 @@
 //NPM includes
-const path = require('path');2
+const path = require('path'); 2
 const express = require('express');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
@@ -37,7 +37,7 @@ app.engine('ejs', ejsMate);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
