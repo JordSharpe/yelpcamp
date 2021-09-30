@@ -1,9 +1,12 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
 
 const catchAsync = require('../utils/catchAsync');
 const { isLoggedIn, validateCampground, isAuthor } = require('../middleware');
 const campgrounds = require('../controllers/campgrounds');
+const { storage } = require('../cloudinary');
+const upload = multer({ storage });
 
 // Static URL routes
 router.route('/')
@@ -14,6 +17,7 @@ router.route('/')
     )
     .post(
         isLoggedIn,
+        upload.array('image'),
         validateCampground,
         catchAsync(
             campgrounds.createCampground
@@ -32,6 +36,7 @@ router.route('/:id')
     .put(
         isLoggedIn,
         isAuthor,
+        upload.array('image'),
         validateCampground,
         catchAsync(
             campgrounds.updateCampground

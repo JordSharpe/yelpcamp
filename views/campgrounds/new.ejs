@@ -2,7 +2,7 @@
 <div class="row">
     <h1 class="text-center">New Campground</h1>
     <div class="col-6 offset-3">
-        <form class="needs-validation" action="/campgrounds" method="POST" novalidate>
+        <form class="needs-validation" action="/campgrounds" method="POST" enctype="multipart/form-data" novalidate>
             <div class="mb-3">
                 <label class="form-label" for="title">Title</label>
                 <input class="form-control" type="text" name="campground[title]" id="title" required>
@@ -25,10 +25,8 @@
                 </div>
             </div>
             <div class="mb-3">
-                <label class="form-label" for="image">Image URL</label>
-                <input class="form-control" type="text" name="campground[image]" id="image" required>
-                <div class="valid-feedback">Looks Good!</div>
-                <div class="invalid-feedback">Please provide an image URL!</div>
+                <label for="Images" class="form-label">Upload Images</label>
+                <input class="form-control" type="file" name="image" id="Images" multiple required>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="description">Description</label>

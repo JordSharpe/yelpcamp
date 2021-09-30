@@ -1,4 +1,8 @@
 //NPM includes
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config();
+}
+
 const path = require('path'); 2
 const express = require('express');
 const mongoose = require('mongoose');
