@@ -1,10 +1,12 @@
 mapboxgl.accessToken = mapToken;
 const map = new mapboxgl.Map({
-    container: 'map',
+    container: 'cluster-map',
     style: 'mapbox://styles/mapbox/light-v10',
     center: [-103.5917, 40.6699],
     zoom: 3
 });
+
+map.addControl(new mapboxgl.NavigationControl());
 
 map.on('load', () => {
     // Add a new source from our GeoJSON data and
@@ -101,7 +103,7 @@ map.on('load', () => {
     // the location of the feature, with
     // description HTML from its properties.
     map.on('click', 'unclustered-point', (e) => {
-        const {popUpMarkup} = e.features[0].properties;
+        const { popUpMarkup } = e.features[0].properties;
         const coordinates = e.features[0].geometry.coordinates.slice();
 
         // Ensure that if the map is zoomed out such that
