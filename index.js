@@ -27,7 +27,8 @@ const campgroundsRoutes = require('./routes/campgrounds');
 const reviewsRoutes = require('./routes/reviews');
 const userRoutes = require('./routes/register');
 
-const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/yelpcamp'
+const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/yelpcamp';
+const secret = process.env.SECRET || 'secretStringIsSecret';
 
 mongoose.connect(dbUrl , {
     useNewUrlParser: true,
@@ -100,10 +101,10 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
     name: '_sm',
-    secret: 'secretStringIsSecret',
+    secret: secret,
     store: MongoStore.create({
         mongoUrl: dbUrl,
-        secret: 'secretStringIsSecret',
+        secret: secret,
         touchAfter: 24 * 60 * 60,
     }),
     resave: false,
@@ -149,6 +150,7 @@ app.use((err, req, res, next) => {
     res.status(statusCode).render('error', { err });
 });
 
-app.listen(3000, () => {
-    console.log('Service listening on port 3000');
+const port = process.env.PORT || 3000
+app.listen(port, () => {
+    console.log(`Service listening on port ${port}`);
 });
