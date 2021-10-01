@@ -3,17 +3,18 @@ if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 }
 
-const path = require('path'); 2
+const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const session = require('express-session');
 const flash = require('connect-flash');
-const passport = require('passport')
+const passport = require('passport');
 const LocalStratagy = require('passport-local');
 const mongoSanitize = require('express-mongo-sanitize');
-const helmet = require('helmet')
+const helmet = require('helmet');
+const MongoStore = require('connect-mongo');
 const app = express();
 
 //Local includes
@@ -26,7 +27,10 @@ const campgroundsRoutes = require('./routes/campgrounds');
 const reviewsRoutes = require('./routes/reviews');
 const userRoutes = require('./routes/register');
 
-mongoose.connect('mongodb://127.0.0.1:27017/yelpcamp', {
+// const dbUrl = process.env.DB_URL;
+const dbUrl = 'mongodb://127.0.0.1:27017/yelpcamp'
+
+mongoose.connect(dbUrl , {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true,
@@ -49,6 +53,7 @@ app.use(mongoSanitize({
 app.use(helmet())
 const scriptSrcUrls = [
     "https://cdn.jsdelivr.net/",
+    "https://stackpath.bootstrapcdn.com/",
     "https://api.tiles.mapbox.com/",
     "https://api.mapbox.com/",
     "https://kit.fontawesome.com/",
@@ -58,6 +63,7 @@ const scriptSrcUrls = [
 const styleSrcUrls = [
     "https://kit-free.fontawesome.com/",
     "https://cdn.jsdelivr.net/",
+    "https://stackpath.bootstrapcdn.com/",
     "https://api.mapbox.com/",
     "https://api.tiles.mapbox.com/",
     "https://fonts.googleapis.com/",
@@ -96,6 +102,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
     name: '_sm',
     secret: 'secretStringIsSecret',
+    store: MongoStore.create({
+        mongoUrl: dbUrl,
+        secret: 'secretStringIsSecret',
+        touchAfter: 24 * 60 * 60,
+    }),
     resave: false,
     saveUninitialized: true,
     cookie: {
