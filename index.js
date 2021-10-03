@@ -80,8 +80,8 @@ const fontSrcUrls = [];
 app.use(
     helmet.contentSecurityPolicy({
         directives: {
-            defaultSrc: ["https://protected-beach-05933.herokuapp.com/"],
-            childSrc: ["blob:"],
+            defaultSrc: [],
+            childSrc: ["blob:", ...connectSrcUrls],
             connectSrc: ["'self'", ...connectSrcUrls],
             scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
             styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
